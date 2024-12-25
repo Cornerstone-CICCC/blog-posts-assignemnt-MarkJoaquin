@@ -1,54 +1,50 @@
-# Blog Posts React App
+# React + TypeScript + Vite
 
-## Description
-In this project, you will create a simple blog posts app using React. The app will fetch data from the JSONPlaceholder API, which provides a collection of placeholder posts and users. You'll practice working with components, props, and API requests.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Learning Objectives
-- Develop a React application using Vite as the project setup tool.
-- Create and structure React components effectively.
-- Fetch and manage data from an external API using `useEffect`.
-- Pass data between components using props.
-- Dynamically render a list of posts.
+Currently, two official plugins are available:
 
----
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Instructions
+## Expanding the ESLint configuration
 
-### 1. Set Up Your Project
-- Initialize a new React project using Vite.
-- Familiarize yourself with the basic folder structure and files that Vite sets up for you.
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-### 2. Create Components
-- **`BlogPostList` Component:** This will be responsible for rendering a list of blog posts. It should receive the posts data as props and map through them to render individual `BlogPost` components.
-- **`BlogPost` Component:** This will display the content of a single blog post, including its title, body, and the author's name. The post data should be passed down as props.
-- **`Post` Component (Optional):** If you want to extend the project, you can create a `Post` component that shows the detailed view of a single post, triggered when a user clicks on a post title.
+- Configure the top-level `parserOptions` property like this:
 
-### 3. Fetch Data from the API
-- Use the `useEffect` hook to fetch posts data from the [JSONPlaceholder API](https://jsonplaceholder.typicode.com/posts) when the `BlogPostList` component mounts.
-- Store the fetched data in a state variable using `useState`.
-- Ensure you handle loading states and potential errors during the fetch process.
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-### 4. Passing Data via Props
-- Pass the fetched posts data from your main component (e.g., `App`) down to the `BlogPostList` component as props.
-- Inside `BlogPostList`, further pass the individual post data to the `BlogPost` component.
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-### 5. Rendering the Posts
-- Inside the `BlogPostList` component, map over the posts array and render a `BlogPost` component for each post.
-- Make sure that each post has a unique `key` prop to help React optimize rendering.
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
 
-### 6. Optional Enhancements
-- Display additional user information by fetching and incorporating user data from the [JSONPlaceholder users API](https://jsonplaceholder.typicode.com/users).
-- Add basic styling to improve the visual appearance of your blog posts app.
-- Implement a "Load More" feature to fetch and display more posts as needed.
-
----
-
-## Expected Output
-By the end of this project, you should have a functioning React app that displays a list of blog posts fetched from an external API. You'll have practiced working with components, props, and React's state management tools (`useState` and `useEffect`).
-
----
-
-## Additional Resources
-- [React Documentation](https://react.dev/) - For reference and further reading.
-- [Vite Documentation](https://vitejs.dev/guide/) - To understand how to work with Vite.
-- [JSONPlaceholder API](https://jsonplaceholder.typicode.com/) - For API reference and additional data fetching endpoints.
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
